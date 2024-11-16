@@ -1,0 +1,73 @@
+#!/bin/bash
+
+# URL de la hoja de estilos
+CSS_URL="https://www.w3schools.com/w3css/4/w3.css"
+# Nombre del archivo local
+CSS_FILE="w3.css"
+
+# Función para mostrar un mensaje de error y salir
+function error_exit {
+    echo "Error: $1"
+    exit 1
+}
+
+# Comprobar si el archivo ya ha sido descargado
+if [ -f "$CSS_FILE" ]; then
+    echo "La hoja de estilos ya ha sido descargada."
+else
+    # Intentar descargar la hoja de estilos
+    echo "Descargando la hoja de estilos..."
+    curl -o "$CSS_FILE" "$CSS_URL" || error_exit "No se pudo descargar la hoja de estilos."
+    echo "Descarga completada."
+fi
+
+# Crear archivos HTML
+echo "Creando archivos HTML..."
+cat <<EOL > index.html
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="w3.css">
+    <title>Index</title>
+</head>
+<body>
+    <h1 class="w3-center">Página Principal</h1>
+    <p class="w3-center"><a href="1pagina.html">Ir a la página 1</a></p>
+    <p class="w3-center"><a href="2pagina.html">Ir a la página 2</a></p>
+</body>
+</html>
+EOL
+
+cat <<EOL > 1pagina.html
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="w3.css">
+    <title>Página 1</title>
+</head>
+<body>
+    <h1 class="w3-center">Página 1</h1>
+    <p class="w3-center"><a href="index.html">Volver a la página principal</a></p>
+    <p class="w3-center"><a href="2pagina.html">Ir a la página 2</a></p>
+</body>
+</html>
+EOL
+
+cat <<EOL > 2pagina.html
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="w3.css">
+    <title>Página 2</title>
+</head>
+<body>
+    <h1 class="w3-center">Página 2</h1>
+    <p class="w3-center"><a href="index.html">Volver a la página principal</a></p>
+    <p class="w3-center"><a href="1pagina.html">Ir a la página 1</a></p>
+</body>
+</html>
+EOL
+
+echo "Archivos HTML creados con éxito."
+
+echo "El script se ha ejecutado correctamente."
